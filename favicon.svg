@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="110" fill="#000000" />
+  <!-- Top diamond of the cap -->
+  <path d="M256 120 L80 230 L256 340 L432 230 Z" fill="#ffffff" />
+  <!-- Base of the cap -->
+  <path d="M140 275 L140 360 Q 256 440 372 360 L372 275 L256 350 Z" fill="#ffffff" />
+  <!-- Tassel -->
+  <path d="M432 230 L432 350" fill="none" stroke="#ffffff" stroke-width="20" stroke-linecap="round" />
+  <circle cx="432" cy="370" r="24" fill="#ffffff" />
+</svg>
