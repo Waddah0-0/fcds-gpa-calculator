@@ -662,6 +662,8 @@
       state.courses.forEach(course => {
         const credits = parseFloat(course.credits) || 0;
         const gradeVal = FCDS_GRADES[course.grade] || 0;
+        // Prevent negative values
+        if (credits < 0) return;
         semHours += credits;
         semPoints += (credits * gradeVal);
       });
@@ -696,12 +698,20 @@
       displaySemHours.textContent = semHours;
       displaySemPoints.textContent = semPoints.toFixed(3);
 
-      animateValue(displaySemGpa, state.lastSemesterGPA, semesterGPA, 600, 4);
-      state.lastSemesterGPA = semesterGPA;
+      // Show "--" when no courses, otherwise animate the value
+      if (semHours === 0) {
+        displaySemGpa.textContent = '--';
+        state.lastSemesterGPA = 0;
+      } else {
+        const startValue = state.lastSemesterGPA || 0;
+        animateValue(displaySemGpa, startValue, semesterGPA, 600, 4);
+        state.lastSemesterGPA = semesterGPA;
+      }
 
       if (hasPrevData) {
         cgpaCard.classList.add('active');
-        animateValue(displayCgpa, state.lastCGPA || 0, cgpa, 600, 4);
+        const startValue = state.lastCGPA || 0;
+        animateValue(displayCgpa, startValue, cgpa, 600, 4);
         state.lastCGPA = cgpa;
       } else {
         cgpaCard.classList.remove('active');
@@ -812,12 +822,20 @@
     });
 
     prevValInput.addEventListener('input', (e) => {
-      state.prevVal = e.target.value;
+      const val = parseFloat(e.target.value);
+      state.prevVal = (isNaN(val) || val < 0) ? '' : e.target.value;
+      if (state.prevVal === '' && e.target.value !== '') {
+        e.target.value = '';
+      }
       calculate();
     });
 
     prevHoursInput.addEventListener('input', (e) => {
-      state.prevHours = e.target.value;
+      const val = parseFloat(e.target.value);
+      state.prevHours = (isNaN(val) || val < 0) ? '' : e.target.value;
+      if (state.prevHours === '' && e.target.value !== '') {
+        e.target.value = '';
+      }
       calculate();
     });
 
